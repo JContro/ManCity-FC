@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+
 """
 Created on Mon Oct 30 15:34:57 2017
 
@@ -50,33 +50,7 @@ def smoothing(periods, balltbl, pltbl):
             
             threshold = 120
             
-           
-            
-    #        for i in range(len(p['a'])):           
-    #            if p['a'][i]**2 > threshold:
-    #                p['a'][i] = 0       # artificially set the accel and the vel to 0, because it's not a glitch
-    #                p['v'][i-1] = 0     # i - 1 because of how the velocity is calculated (otherwise it does not get rid of the correct v)
-    #                # Need to get rid of the half time glitches THIS WILL WORK ONLY IF THE GAME HAS NO SUPPLEMENTARY TIME
-    #                if p['Frames'][i] in range(periods[0][1] - 5, periods[0][1] + 5): # Last 5 frames and first 5 of the half time shouldn't count
-    #                    p['a'][i] = 0       # artificially set the accel and the vel to 0, because it's not a glitch
-    #                    p['v'][i] = 0
-    #                    # append these i's to change the a and vs later
-    #                    HalfTmFrames.append(i)
-    #                    
-                        
-                        
-    #                else:
-    #                    GlitchFrames.append(p['Frames'][i])      # We have all the glitch frames in one array
-            
-            # For loop to linearly interpolate the glitch frames
-    #        for i in GlitchFrames:
-                
-    #            p['r'][i-3] = int((p['r'][i-4] + p['r'][i])/2) # This is not real interpolation, but  it should smooth enough
-    #            p['r'][i-2] = int((p['r'][i-3] + p['r'][i])/2)
-    #            p['r'][i-1] = int((p['r'][i-2] + p['r'][i])/2)
-    #        # Recalculate the v and a with the new positions
-    #        p['v'] = p['r'][1:] - p['r'][:-1]
-    #        p['a'] = p['v'][1:] - p['v'][:-1]
+
     
             for i in range(periods[0][1] - 5, periods[0][1] + 5):           
                 if p['a'][i]**2 > threshold:
@@ -130,44 +104,7 @@ def smoothing(periods, balltbl, pltbl):
                 NewTable.add_column(posCol)
                 NewTable.add_column(vCol)
                 NewTable.add_column(aCol)
-#            
-#            if switch:
-#                
-#                    # Take away all nan values for histogram
-#                
-#                
-#                p['r'] = p['r'][~np.isnan(p['r'])]
-#                      # Make the r v and a arrays the same length
-#                p['a'] = p['a'][~np.isnan(p['a'])]
-#                p['v'] = p['v'][~np.isnan(p['v'])] 
-#                  # Same for velocity
-#    #       
-#                plt.figure()
-#                plt.plot(p['r'])
-#                plt.figure()
-#                plt.plot(p['v'])
-#                plt.figure()
-#                plt.plot(p['a'])
-#                plt.figure()
-#                plt.hist(p['a'], bins = 80)
-#                r_smooth = scipy.ndimage.uniform_filter1d(p['r'], 15)
-#                v_smooth = scipy.ndimage.uniform_filter1d(p['v'], 15)
-#                a_smooth = scipy.ndimage.uniform_filter1d(p['a'], 15)
-#    #            plt.figure()
-#    #            plt.plot(r_smooth)
-#                r_smooth = r_smooth[::15]
-#                v_smooth = v_smooth[::15]
-#                a_smooth = a_smooth[::15]
-#                p['a'] = p['a'][::15]
-#                plt.figure()
-#                plt.plot(a_smooth)
-#                plt.figure()
-#                plt.plot(p['a'])
-#                plt.figure()
-#                plt.hist(a_smooth, bins = 41)
-#            switch = False
-    
-    #NewTable.write('SmoothedTable.fits', overwrite = True)
+#       
     
     #Now use similar algorithm as above to smooth the ball data. 
     count =0
@@ -191,16 +128,7 @@ def smoothing(periods, balltbl, pltbl):
                 if b['a'][i]**2 > threshold:
                     b['a'][i] = 0       # artificially set the accel and the vel to 0, because it's not a glitch
                     b['v'][i-1] = 0     # i - 1 because of how the velocity is calculated (otherwise it does not get rid of the correct v)
-                    
-#            plt.figure()
-#            plt.plot(b['r'])
-#            plt.figure()
-#            plt.plot(b['v'])
-#            plt.figure()
-#            plt.plot(b['a'])
-#            plt.figure()
-#            plt.hist(b['a'], bins = 40)
-           
+          # Apply uniform 1D filter from the scipy library - good fast filter, like a running average
             TempR = scipy.ndimage.uniform_filter1d(b['r'], 15)
             TempV = scipy.ndimage.uniform_filter1d(b['v'], 15)
             TempA = scipy.ndimage.uniform_filter1d(b['a'], 15)
@@ -214,17 +142,6 @@ def smoothing(periods, balltbl, pltbl):
             ballSmooth.add_column(posCol)
             ballSmooth.add_column(vCol)
             ballSmooth.add_column(aCol)
-#            print(count)
-#            plt.figure()
-#            plt.plot([1,2,3],[-1,3,4])
-#            plt.figure()
-#            plt.plot(b['r'])
-#            plt.figure()
-#            plt.plot(b['v'])
-#            plt.figure()
-#            plt.plot(b['a'])
-#            plt.figure()
-#            plt.hist(b['a'], bins = 40)
     
         elif count == 4:
             print('hi')
